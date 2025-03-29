@@ -23,4 +23,12 @@ public interface TaskDao {
 
     @Query("SELECT * FROM tasks ORDER BY isComplete ASC")
     LiveData<List<Task>> getAllTasks();
+
+    @Query("SELECT * FROM tasks WHERE isComplete = 0")
+    LiveData<List<Task>> getUncompletedTasks();
+
+    @Query("SELECT * FROM tasks WHERE isComplete = 1")
+    LiveData<List<Task>> getCompletedTasks();
+    @Query("DELETE FROM tasks WHERE createdAt < :expirationTime")
+    void deleteOldTasks(long expirationTime);
 }

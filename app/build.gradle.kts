@@ -3,6 +3,9 @@ plugins {
 }
 
 android {
+    compileOptions {
+        encoding = "UTF-8"
+    }
     namespace = "com.example.to_dolist"
     compileSdk = 35
 

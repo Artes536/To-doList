@@ -5,10 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 @Entity(tableName = "tasks")
@@ -20,19 +16,18 @@ public class Task {
     private String text;
 
     @ColumnInfo(name = "isComplete")
-    private Boolean isComplete;
+    private Boolean isComplete = false;
+
+    @ColumnInfo(name = "createdAt")
+    private Long createdAt;
 
     public Task() {
     }
 
-    public Task(String text, boolean isComplete) {
+    public Task(String text) {
         this.text = text;
-        this.isComplete = isComplete;
-    }
-    @Ignore
-    public Task(String text, Boolean isComplete) {
-        this.text = text;
-        this.isComplete = isComplete;
+        this.isComplete = false;
+        this.createdAt = System.currentTimeMillis();
     }
     public String getText(){
         return text;
@@ -56,5 +51,13 @@ public class Task {
 
     public void setComplete(Boolean complete) {
         isComplete = complete;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
     }
 }

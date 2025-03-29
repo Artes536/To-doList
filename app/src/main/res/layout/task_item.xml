@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <CheckBox
+        android:id="@+id/task_checkbox"
+        android:layout_width="48sp"
+        android:layout_height="48sp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"/>
+
+    <TextView
+        android:id="@+id/task_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Пример задачи"
+        android:textSize="20sp"
+        android:paddingStart="8dp"
+        android:layout_marginStart="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.example.to_dolist.repository;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -16,30 +15,46 @@ import java.util.concurrent.Executors;
 public class TaskRepository {
     private TaskDao taskDao;
     private LiveData<List<Task>> allTasks;
+    private LiveData<List<Task>> completedTasks;
+    private LiveData<List<Task>> uncompletedTasks;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public TaskRepository(Application application){
+    public TaskRepository(Application application) {
         TaskDatabase database = TaskDatabase.getInstance(application);
         taskDao = database.taskDao();
         allTasks = taskDao.getAllTasks();
+        completedTasks = taskDao.getCompletedTasks();
+        uncompletedTasks = taskDao.getUncompletedTasks();
     }
 
-    public void insert(Task task){
-        executorService.execute(()->{
-            taskDao.insert(task);}
+    public void insert(Task task) {
+        executorService.execute(() -> {
+                    taskDao.insert(task);
+                }
         );
     }
 
-    public void update(Task task){
-        executorService.execute(()-> taskDao.update(task));
+    public void update(Task task) {
+        executorService.execute(() -> taskDao.update(task));
     }
 
-    public void delete(Task task){
-        executorService.execute(()-> taskDao.delete(task));
+    public void delete(Task task) {
+        executorService.execute(() -> taskDao.delete(task));
     }
 
-    public LiveData<List<Task>> getAllTasks(){
+    public LiveData<List<Task>> getAllTasks() {
         return allTasks;
     }
 
+    public LiveData<List<Task>> getCompletedTasks() {
+        return completedTasks;
+    }
+
+    public LiveData<List<Task>> getUncompletedTasks() {
+        return uncompletedTasks;
+    }
+
+    public void deleteOldTasks(long expirationTime) {
+        new Thread(() -> taskDao.deleteOldTasks(expirationTime)).start();
+    }
 }
