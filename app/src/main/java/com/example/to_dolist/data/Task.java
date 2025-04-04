@@ -23,7 +23,7 @@ public class Task {
 
     public Task() {
     }
-
+    @Ignore
     public Task(String text) {
         this.text = text;
         this.isComplete = false;

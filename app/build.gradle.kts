@@ -43,6 +43,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    testImplementation ("org.mockito:mockito-core:4.0.0")
+    androidTestImplementation ("androidx.room:room-testing:2.5.0")
 
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
@@ -53,6 +55,5 @@ dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.3.0")
 
-    implementation ("org.projectlombok:lombok:1.18.30")
-    annotationProcessor ("org.projectlombok:lombok:1.18.30")
+
 }

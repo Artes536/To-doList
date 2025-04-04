@@ -40,28 +40,37 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewUncompleted.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewCompleted.setLayoutManager(new LinearLayoutManager(this));
 
-        uncompletedTaskAdapter = new TaskAdapter(new ArrayList<>(), (task, isChecked) -> {
-            task.setComplete(isChecked);
-            taskViewModel.update(task);
-        });
+        uncompletedTaskAdapter = new TaskAdapter(new ArrayList<>(),
+                (task, isChecked) -> {
+                    task.setComplete(isChecked);
+                    taskViewModel.update(task); // Изменение состояния чекбокса
+                },
+                task -> {
+                    taskViewModel.delete(task); // Удаление при нажатии на кнопку корзины
+                });
 
-        completedTaskAdapter = new TaskAdapter(new ArrayList<>(), (task, isChecked) -> {
-            task.setComplete(isChecked);
-            taskViewModel.update(task);
-        });
+        completedTaskAdapter = new TaskAdapter(new ArrayList<>(),
+                (task, isChecked) -> {
+                    task.setComplete(isChecked);
+                    taskViewModel.update(task);
+                },
+                task -> {
+                    taskViewModel.delete(task);
+                });
 
         recyclerViewUncompleted.setAdapter(uncompletedTaskAdapter);
         recyclerViewCompleted.setAdapter(completedTaskAdapter);
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
-        // Загружаем список незавершённых задач
+
         taskViewModel.getUncompletedTasks().observe(this, tasks -> uncompletedTaskAdapter.setTasks(tasks));
 
-        // Загружаем список завершённых задач
+
         taskViewModel.getCompletedTasks().observe(this, tasks -> completedTaskAdapter.setTasks(tasks));
 
         FloatingActionButton fabAddTask = findViewById(R.id.floating_add_task_button);
+        taskViewModel.deleteOldTasks();
         fabAddTask.setOnClickListener(view -> showAddTaskDialog());
     }
 
@@ -76,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Добавить", (dialog, which) -> {
             String taskText = input.getText().toString().trim();
             if (!taskText.isEmpty()) {
-                Task newTask = new Task(taskText); // Создаём новую задачу (по умолчанию невыполненная)
+                Task newTask = new Task(taskText);
                 taskViewModel.insert(newTask);
             }
         });
